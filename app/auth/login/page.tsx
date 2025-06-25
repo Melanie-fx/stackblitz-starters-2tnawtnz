@@ -1,36 +1,53 @@
 'use client'
 
 import { useState } from 'react'
-import { supabase } from '@/utils/supabase/client'
+import { signIn } from '@/utils/auth'
 import { useRouter } from 'next/navigation'
 
 export default function LoginPage() {
   const [email, setEmail] = useState('')
-  const [message, setMessage] = useState('')
-  const [loading, setLoading] = useState(false)
+  const [password, setPassword] = useState('')
+  const [error, setError] = useState('')
   const router = useRouter()
 
-  const handleLogin = async (e: React.FormEvent) => {
+  async function handleLogin(e: React.FormEvent) {
     e.preventDefault()
-    setLoading(true)
-
-    const { error } = await supabase.auth.signInWithOtp({ email })
-    setLoading(false)
-
-    if (error) {
-      setMessage('Login failed. Try again.')
+    const err = await signIn(email, password)
+    if (err) {
+      setError(err.message)
     } else {
-      setMessage('Check your email for the magic link.')
+      router.push('/dashboard')
     }
   }
 
   return (
-    <form onSubmit={handleLogin}>
-      <input type="email" value={email} onChange={e => setEmail(e.target.value)} />
-      <button type="submit" disabled={loading}>
-        {loading ? 'Sending...' : 'Send Magic Link'}
-      </button>
-      {message && <p>{message}</p>}
-    </form>
+    <main className="min-h-screen flex items-center justify-center bg-gray-100">
+      <form onSubmit={handleLogin} className="bg-white p-6 rounded shadow w-full max-w-sm space-y-4">
+        <h1 className="text-2xl font-bold">🔐 Login to Tradenova</h1>
+
+        <input
+          type="email"
+          placeholder="Email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          required
+          className="w-full border px-3 py-2 rounded"
+        />
+        <input
+          type="password"
+          placeholder="Password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          required
+          className="w-full border px-3 py-2 rounded"
+        />
+
+        <button type="submit" className="w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700">
+          Login
+        </button>
+
+        {error && <p className="text-sm text-red-600">{error}</p>}
+      </form>
+    </main>
   )
 }
