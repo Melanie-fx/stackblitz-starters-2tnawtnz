@@ -9,14 +9,14 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@supabase/supabase-js": "^2.39.8",              // Added for Supabase client
-    "@supabase/auth-helpers-nextjs": "^0.8.9",       // Added for Next.js auth integration
+    "@supabase/supabase-js": "^2.39.8",
+    "@supabase/auth-helpers-nextjs": "^0.8.9",
     "@types/node": "20.6.2",
     "@types/react": "18.2.22",
     "@types/react-dom": "18.2.7",
     "autoprefixer": "10.4.15",
-    "eslint": "^9.6.0",                              // Updated to v9.x (Current, per ESLint doc)
-    "eslint-config-next": "13.5.1",                  // Matches your Next.js version
+    "eslint": "^9.6.0",
+    "eslint-config-next": "13.5.1",
     "next": "13.5.1",
     "postcss": "8.4.30",
     "react": "18.2.0",
