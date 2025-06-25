@@ -1,6 +1,8 @@
-import { createClient } from '@supabase/supabase-js'
+import { createBrowserClient } from '@supabase/auth-helpers-nextjs';
 
-const supabaseUrl = 'https://cozjdbultljamcoiwufc.supabase.co'
-const supabaseAnonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNvempkYnVsdGxqYW1jb2l3dWZjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTAwOTgyNTksImV4cCI6MjA2NTY3NDI1OX0.B3ecedkV-9S0YKo_tfSDn4InbB7LNAjzDfMJpMz0teI'
-
-export const supabase = createClient(supabaseUrl, supabaseAnonKey)
+export const createClient = () => {
+  return createBrowserClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+  );
+};
