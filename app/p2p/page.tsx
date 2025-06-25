@@ -1,7 +1,7 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import { supabase } from '@/utils/supabase'
+import { supabase } from '@/utils/supabase/client' // If in a client component
 
 type P2POrder = {
   id: string
