@@ -9,9 +9,14 @@ export const createSupabaseServerClient = () => {
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
     {
       cookies: {
-        get: (name) => cookieStore.get(name)?.value,
-        set: (name, value, options) => cookieStore.set(name, value, options),
-        remove: (name, options) => cookieStore.delete({ name, ...options }),
+        getAll() {
+          return cookieStore.getAll().map(({ name, value }) => ({ name, value }));
+        },
+        setAll(cookiesToSet) {
+          cookiesToSet.forEach(({ name, value, ...options }) => {
+            cookieStore.set(name, value, options);
+          });
+        },
       },
     }
   );
