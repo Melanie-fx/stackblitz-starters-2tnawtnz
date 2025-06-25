@@ -1,6 +1,7 @@
 // utils/supabase/server.ts
 import { createServerClient } from '@supabase/ssr';
 import { cookies } from 'next/headers';
+import type { ResponseCookie } from 'next/dist/compiled/@edge-runtime/cookies';
 
 export const createSupabaseServerClient = () => {
   const cookieStore = cookies();
@@ -13,8 +14,8 @@ export const createSupabaseServerClient = () => {
           return cookieStore.getAll().map(({ name, value }) => ({ name, value }));
         },
         setAll(cookiesToSet) {
-          cookiesToSet.forEach(({ name, value, ...options }) => {
-            cookieStore.set(name, value, options);
+          cookiesToSet.forEach(({ name, value, options }) => {
+            cookieStore.set(name, value, options as Partial<ResponseCookie>);
           });
         },
       },
