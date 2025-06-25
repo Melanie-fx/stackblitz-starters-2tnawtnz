@@ -1,5 +1,5 @@
 // app/videos/page.tsx
-import { fetchCryptoData, fetchStockData, fetchDerivData, fetchNews } from '@/utils/api';
+import { fetchCryptoData, getStockData, fetchDerivData, fetchNews } from '@/utils/api';
 import dynamic from 'next/dynamic';
 import AICoach from './dashboard-client';
 import { Line } from 'react-chartjs-2';
@@ -9,11 +9,33 @@ const NewsSection = dynamic(() => import('./news-section'), { ssr: false });
 
 export default async function DashboardPage() {
   const cryptoData = await fetchCryptoData();
-  const stockData = await fetchStockData();
+  const stockDataAAPL = await getStockData('AAPL');
+  const stockDataMSFT = await getStockData('MSFT');
   const derivData = await fetchDerivData();
   const news = await fetchNews();
 
-  // Mock chart data
+  // Combine stock data
+  const stockData = {
+    results: [
+      ...(stockDataAAPL.results || []),
+      ...(stockDataMSFT.results || []),
+    ],
+  };
+
+  // Mock chart data for AAPL
+  const stockChartData = {
+    labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
+    datasets: [
+      {
+        label: 'AAPL (USD)',
+        data: [180, 185, 190, 195, 200, stockDataAAPL?.results?.[0]?.c || 0],
+        borderColor: '#3B82F6',
+        fill: false,
+      },
+    ],
+  };
+
+  // Mock chart data for crypto
   const cryptoChartData = {
     labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
     datasets: [
@@ -26,23 +48,10 @@ export default async function DashboardPage() {
     ],
   };
 
-  const stockChartData = {
-    labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
-    datasets: [
-      {
-        label: 'AAPL (USD)',
-        data: [180, 185, 190, 195, 200, stockData?.results?.[0]?.c || 0],
-        borderColor: '#3B82F6',
-        fill: false,
-      },
-    ],
-  };
-
   return (
     <div className="container mx-auto p-6 flex flex-col md:flex-row gap-8 bg-gray-900 text-white min-h-screen dark:bg-white dark:text-gray-900">
       {/* Left Column (70%) */}
       <div className="w-full md:w-[70%] space-y-8">
-        {/* Crypto Cards */}
         <section>
           <h2 className="text-2xl md:text-3xl font-bold mb-6 dark:text-gray-800">Crypto Prices</h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
@@ -64,7 +73,6 @@ export default async function DashboardPage() {
           </div>
         </section>
 
-        {/* Stock Cards */}
         <section>
           <h2 className="text-2xl md:text-3xl font-bold mb-6 dark:text-gray-800">Stock Data</h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
@@ -88,7 +96,6 @@ export default async function DashboardPage() {
           </div>
         </section>
 
-        {/* Deriv Cards */}
         <section>
           <h2 className="text-2xl md:text-3xl font-bold mb-6 dark:text-gray-800">Deriv Data</h2>
           <div className="bg-gray-800 p-6 rounded-lg shadow-lg dark:bg-gray-100">
@@ -100,14 +107,12 @@ export default async function DashboardPage() {
           </div>
         </section>
 
-        {/* AI Coach Box */}
         <section className="sticky top-6">
           <h2 className="text-2xl md:text-3xl font-bold mb-6 dark:text-gray-800">AI Coach</h2>
           <AICoach />
         </section>
       </div>
 
-      {/* Right Column (30%) */}
       <div className="w-full md:w-[30%] space-y-8">
         <NewsSection news={news} />
         <section>
