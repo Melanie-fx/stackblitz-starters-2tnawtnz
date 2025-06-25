@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
-import { supabase } from '@/utils/supabase'
+import { supabase } from '@/utils/supabase/client' // If in a client component
 
 type KYCRequest = {
   id: string
