@@ -59,7 +59,6 @@ export default async function DashboardPage() {
               </p>
             </div>
           </div>
-          {/* Crypto Chart */}
           <div className="bg-gray-800 p-6 rounded-lg shadow-lg mt-6 dark:bg-gray-100">
             <Line data={cryptoChartData} options={{ responsive: true }} />
           </div>
@@ -84,7 +83,6 @@ export default async function DashboardPage() {
               </div>
             )) || <p className="text-red-400 dark:text-red-600">Stock data unavailable</p>}
           </div>
-          {/* Stock Chart */}
           <div className="bg-gray-800 p-6 rounded-lg shadow-lg mt-6 dark:bg-gray-100">
             <Line data={stockChartData} options={{ responsive: true }} />
           </div>
