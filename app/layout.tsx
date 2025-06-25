@@ -1,6 +1,6 @@
 import './globals.css'
 import Link from 'next/link'
-import { createClient } from '@/utils/supabase'
+import { supabase } from '@/utils/supabase/server';
 import { cookies } from 'next/headers'
 
 export const metadata = {
