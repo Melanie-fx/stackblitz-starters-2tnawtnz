@@ -7,7 +7,6 @@ export default function AICoach() {
   const [response, setResponse] = useState('');
   const [theme, setTheme] = useState('dark');
 
-  // Theme switcher logic
   useEffect(() => {
     if (theme === 'light') {
       document.documentElement.classList.add('dark');
@@ -27,7 +26,6 @@ export default function AICoach() {
 
   return (
     <div className="bg-gray-800 p-6 rounded-lg shadow-lg transition-transform hover:scale-105 dark:bg-gray-100">
-      {/* Theme Switcher */}
       <div className="flex justify-end mb-4">
         <button
           onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
@@ -36,7 +34,6 @@ export default function AICoach() {
           {theme === 'dark' ? 'Light Mode' : 'Dark Mode'}
         </button>
       </div>
-      {/* AI Coach */}
       <p className="text-lg font-medium dark:text-gray-800">Ask our AI Coach for market insights!</p>
       <input
         type="text"
