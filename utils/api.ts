@@ -20,17 +20,16 @@ export async function fetchCryptoData() {
   }
 }
 
-export async function fetchStockData() {
+export async function getStockData(symbol: string) {
   try {
-    const res = await fetch(
-      `https://api.polygon.io/v2/aggs/ticker/AAPL/range/1/day/2025-06-24/2025-06-24?apiKey=${process.env.POLYGON_API_KEY}`,
-      { headers: { accept: 'application/json' } }
-    );
+    const key = process.env.POLYGON_API_KEY;
+    const url = `https://api.polygon.io/v2/aggs/ticker/${symbol}/prev?adjusted=true&apiKey=${key}`;
+    const res = await fetch(url, { headers: { accept: 'application/json' } });
     if (!res.ok) throw new Error('Failed to fetch stock data');
     return await res.json();
   } catch (error) {
     console.error('Stock fetch error:', error);
-    return { results: [{ T: 'AAPL', c: 0, o: 0 }] };
+    return { results: [{ T: symbol, c: 0, o: 0 }] };
   }
 }
 
