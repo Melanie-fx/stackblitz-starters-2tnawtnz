@@ -13,7 +13,7 @@ export default async function DashboardPage() {
   const derivData = await fetchDerivData();
   const news = await fetchNews();
 
-  // Mock chart data (replace with real API data later)
+  // Mock chart data
   const cryptoChartData = {
     labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
     datasets: [
@@ -110,7 +110,6 @@ export default async function DashboardPage() {
       {/* Right Column (30%) */}
       <div className="w-full md:w-[30%] space-y-8">
         <NewsSection news={news} />
-        {/* Error/Alert Boxes */}
         <section>
           <h2 className="text-2xl md:text-3xl font-bold mb-6 dark:text-gray-800">Alerts</h2>
           <div className="bg-red-800 p-6 rounded-lg shadow-lg dark:bg-red-100">
