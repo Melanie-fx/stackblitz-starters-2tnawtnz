@@ -1,18 +1,15 @@
-import { createMiddlewareClient } from '@supabase/auth-helpers-nextjs'
+// middleware.ts
+import { createMiddlewareClient } from '@supabase/ssr'
 import { NextResponse } from 'next/server'
 import type { NextRequest } from 'next/server'
 
 export async function middleware(req: NextRequest) {
   const res = NextResponse.next()
-  const supabase = createMiddlewareClient({ req, res })
-  const { data: { user } } = await supabase.auth.getUser()
+  const supabase = createMiddlewareClient({
+    req,
+    res,
+  })
 
-  const protectedRoutes = ['/dashboard', '/admin', '/p2p', '/videos', '/news', '/ai-coach']
-  const isProtected = protectedRoutes.some((route) => req.nextUrl.pathname.startsWith(route))
-
-  if (isProtected && !user) {
-    return NextResponse.redirect(new URL('/auth/login', req.url))
-  }
-
+  await supabase.auth.getUser()
   return res
 }
