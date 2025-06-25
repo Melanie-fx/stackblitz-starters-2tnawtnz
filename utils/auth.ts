@@ -1,4 +1,5 @@
-import { supabase } from './supabase'
+// utils/auth.ts
+import { supabase } from './supabase/client'
 
 // Sign up new user
 export async function signUp(email: string, password: string) {
