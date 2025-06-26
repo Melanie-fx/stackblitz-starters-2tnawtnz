@@ -11,10 +11,13 @@ import { cookies } from 'next/headers';
 const NewsSection = dynamic(() => import('./news-section'), { ssr: false });
 
 export default async function DashboardPage() {
-  const cookieStore = cookies(); // Remove await
+  const cookieStore = cookies(); // Synchronous
   const supabase = createClient(cookieStore);
 
-  const { data: todos } = await supabase.from('todos').select(); // Fetch todos
+  // Debug Supabase query
+  const { data: todos, error } = await supabase.from('todos').select();
+  console.log('Todos data:', todos, 'Error:', error);
+
   const cryptoData = await fetchCryptoData();
   const stockDataAAPL = await getStockData('AAPL');
   const stockDataMSFT = await getStockData('MSFT');
@@ -182,7 +185,7 @@ export default async function DashboardPage() {
                 </li>
               ))
             ) : (
-              <li className="text-red-400 dark:text-red-600">No todos available</li>
+              <li className="text-red-400 dark:text-red-600">No todos or error: {error?.message || 'Unknown'}</li>
             )}
           </ul>
         </section>
